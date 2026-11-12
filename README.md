@@ -50,6 +50,11 @@ Or load a single tool with `https://mcp.apify.com?tools=pagecraft/<tool>` (links
 | [WHOIS Lookup (Bulk Domain Age, Expiry & Registrar)](https://apify.com/pagecraft/domain-whois-lookup) | Bulk WHOIS and RDAP lookup for any domain: registrar, creation and expiry dates, domain age, status, nameservers, DNSSEC and availability. All TLDs. | `https://mcp.apify.com?tools=pagecraft/domain-whois-lookup` |
 | [Workday Jobs Scraper (Any myworkdayjobs.com Career Site)](https://apify.com/pagecraft/workday-jobs-scraper) | Get every open job from any Workday career site, even sites over Workday's 2,000-job limit: title, location, remote type, date and full description. | `https://mcp.apify.com?tools=pagecraft/workday-jobs-scraper` |
 
+## Guides
+
+- [How to convert PDFs to Markdown for LLMs and RAG](guides/pdf-to-markdown.md)
+- [How to convert web pages and HTML to Markdown](guides/html-to-markdown.md)
+
 ## Pricing
 
 Pay per event, set on each tool's Apify Store page. Failed inputs are labelled and priced separately.
