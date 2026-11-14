@@ -1,0 +1,52 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Brand Kit by Domain",
+    "version": "1.0.0",
+    "description": "Get a company's brand kit from its domain in one call: logo, favicon and app icons, primary colour, ranked brand colours, neutral colours and fonts (including Google Fonts). Read live from the website and its stylesheets. One domain per request."
+  },
+  "servers": [
+    {
+      "url": "https://pagecraft--pagecraft-api.apify.actor"
+    }
+  ],
+  "paths": {
+    "/brand": {
+      "get": {
+        "summary": "Get a brand kit for a domain",
+        "description": "Returns company name, logo, favicon, apple touch icon, OG image, primary colour, up to 8 brand colours with their source, up to 5 neutral colours, fonts and Google Fonts.",
+        "operationId": "getBrand",
+        "parameters": [
+          {
+            "name": "domain",
+            "in": "query",
+            "required": true,
+            "description": "Website domain or URL, one per request. Example: stripe.com",
+            "schema": {
+              "type": "string",
+              "example": "stripe.com"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Brand kit",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing or invalid domain (send one domain per request)"
+          },
+          "422": {
+            "description": "The website could not be read; the body says why"
+          }
+        }
+      }
+    }
+  }
+}
