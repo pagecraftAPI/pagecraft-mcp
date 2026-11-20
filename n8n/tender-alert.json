@@ -1,0 +1,426 @@
+{
+  "name": "Weekly EU and UK public tender alert from TED and Find a Tender, deduplicated and emailed",
+  "nodes": [
+    {
+      "id": "7bea61d4-459d-44e7-a01c-cbeb684c13c5",
+      "name": "Overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        -440
+      ],
+      "parameters": {
+        "content": "## Weekly EU and UK tender alert\nEvery Monday this workflow searches **EU tenders on TED** (all EU and EEA countries) and **UK tenders on Find a Tender and Contracts Finder** for your keywords and CPV codes, removes anything it already sent you, flags tenders **closing soon**, logs them to Google Sheets and emails one digest.\n\n**Who it's for**: suppliers, SMEs and bid writers who sell to the public sector in Europe and the UK.\n\n**Cost**: at Apify Free-plan prices, $3 per 1,000 notices returned plus $5 per 1,000 result pages read. A typical week of 50 notices costs well under $0.50. Each Apify node has a $1 spend cap.",
+        "width": 540,
+        "height": 440,
+        "color": 4
+      }
+    },
+    {
+      "id": "90d9787e-57fc-4412-91e8-c128f7750fbb",
+      "name": "Setup",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        520,
+        -440
+      ],
+      "parameters": {
+        "content": "## Setup (5 minutes)\n1. Create a Google Sheet with a tab **Sent tenders** and this header row: `Source, Country, Title, Buyer, Value, Currency, Deadline, Published, CPV, Link, Days left, Closing soon, Sent on`\n2. Connect Google Sheets, Gmail and Apify (OAuth).\n3. Pick the sheet and tab in **Read sent tenders** and **Log new tenders**.\n4. Edit **Your settings**: email, keywords, EU countries, CPV codes, minimum value.\n5. Click **Run now** once to check the email, then activate the workflow.",
+        "width": 540,
+        "height": 440,
+        "color": 6
+      }
+    },
+    {
+      "id": "fadc88bb-b8d7-45c7-92f8-8202b44bc5e2",
+      "name": "Note inputs",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -60,
+        40
+      ],
+      "parameters": {
+        "content": "### 1. Settings and memory\nYour search, and every tender already emailed (so you only see new ones).",
+        "width": 560,
+        "height": 260,
+        "color": 7
+      }
+    },
+    {
+      "id": "dfe6f28c-0830-4ca3-bfe6-e1de28143b6b",
+      "name": "Note search",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        540,
+        40
+      ],
+      "parameters": {
+        "content": "### 2. Two official sources\nEU: TED (Tenders Electronic Daily). UK: Find a Tender and Contracts Finder. Each node runs once and continues if a source is down.",
+        "width": 460,
+        "height": 260,
+        "color": 7
+      }
+    },
+    {
+      "id": "04dbf169-d681-4372-a28f-cc92869873cc",
+      "name": "Note output",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        40
+      ],
+      "parameters": {
+        "content": "### 3. Merge, flag, log, email\nNew tenders are sorted by deadline; those closing within your window go first. Each one is logged so it is never sent twice.",
+        "width": 900,
+        "height": 260,
+        "color": 7
+      }
+    },
+    {
+      "id": "92d0fe40-8d60-43da-aef1-0659e584c8da",
+      "name": "Every Monday 7am",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -40,
+        340
+      ],
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks",
+              "triggerAtDay": [
+                1
+              ],
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "fe9996e5-f6f2-40d6-8997-39af918ea278",
+      "name": "Run now",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -40,
+        520
+      ],
+      "parameters": {}
+    },
+    {
+      "id": "ac1dd526-c252-4cd7-b801-70b46a92b740",
+      "name": "Your settings",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        420
+      ],
+      "parameters": {
+        "jsCode": "// EDIT THESE: what you sell, where, and where the alert goes.\nreturn [{ json: {\n  email: 'you@example.com',          // the weekly alert goes here\n  keywords: ['software', 'cloud'],   // words to find in notices (any language for EU notices)\n  euCountries: ['IE', 'DE', 'NL'],   // EU buyer countries (two-letter codes); [] for all of Europe\n  cpvCodes: ['72'],                  // CPV prefixes, e.g. 72 IT services, 79 business services; [] for any\n  minValue: 0,                       // minimum stated value (notice currency); 0 keeps notices without a value\n  days: 7,                           // look-back window in days\n  closingSoonDays: 14                // tenders closing within this many days are flagged\n} }];"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "ad730c40-e2ef-4d71-a092-4890e9a73e67",
+      "name": "Read sent tenders",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        340,
+        420
+      ],
+      "executeOnce": true,
+      "alwaysOutputData": true,
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "166ea920-e63b-4d0a-b4f6-31c5004a0555",
+      "name": "EU tenders (TED)",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 2,
+      "position": [
+        580,
+        420
+      ],
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "authentication": "apifyOAuth2Api",
+        "operation": "Run actor and get dataset",
+        "actorSource": "store",
+        "actorId": {
+          "__rl": true,
+          "value": "8UdB2ZTzyQ2B8hS5S",
+          "mode": "id"
+        },
+        "customBody": "={{ JSON.stringify({ keywords: $('Your settings').first().json.keywords, countries: $('Your settings').first().json.euCountries, cpvCodes: $('Your settings').first().json.cpvCodes, stages: ['tender'], publishedWithinDays: $('Your settings').first().json.days, openOnly: true, minValue: $('Your settings').first().json.minValue || undefined, maxNotices: 200, maxPages: 10 }) }}",
+        "maxTotalChargeUsd": 1
+      }
+    },
+    {
+      "id": "b16d9ed7-4e2f-482f-b32b-9d9405a8ad0c",
+      "name": "UK tenders",
+      "type": "@apify/n8n-nodes-apify.apify",
+      "typeVersion": 2,
+      "position": [
+        780,
+        420
+      ],
+      "executeOnce": true,
+      "onError": "continueRegularOutput",
+      "alwaysOutputData": true,
+      "parameters": {
+        "authentication": "apifyOAuth2Api",
+        "operation": "Run actor and get dataset",
+        "actorSource": "store",
+        "actorId": {
+          "__rl": true,
+          "value": "VENZ8sixcFjAcsHdD",
+          "mode": "id"
+        },
+        "customBody": "={{ JSON.stringify({ keywords: $('Your settings').first().json.keywords, cpvCodes: $('Your settings').first().json.cpvCodes, stages: ['tender'], publishedWithinDays: $('Your settings').first().json.days, openOnly: true, minValue: $('Your settings').first().json.minValue || undefined, maxNotices: 200 }) }}",
+        "maxTotalChargeUsd": 1
+      }
+    },
+    {
+      "id": "60861ab4-2eb2-479c-8b53-1e42baa83b41",
+      "name": "Merge and flag new",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1000,
+        420
+      ],
+      "parameters": {
+        "jsCode": "// Merge EU and UK notices, drop ones already sent, flag the ones closing soon, sort by deadline.\nconst all = n => { try { return $(n).all().map(i => i.json); } catch { return []; } };\nconst s = $('Your settings').first().json;\nconst sent = new Set(all('Read sent tenders').map(r => String(r.Link || '').trim()).filter(Boolean));\nconst today = new Date(); today.setUTCHours(0, 0, 0, 0);\nconst daysLeft = d => (d ? Math.round((Date.parse(String(d).slice(0, 10)) - today) / 864e5) : null);\nconst rows = [];\nconst errors = [];\nfor (const r of all('EU tenders (TED)')) {\n  if (!r.noticeUrl) { if (r.error) errors.push('EU: ' + r.error); continue; }\n  rows.push({ Source: 'EU (TED)', Country: r.buyerCountry || '', Title: r.title || '', Buyer: r.buyer || '', Value: r.value ?? '', Currency: r.currency || '', Deadline: r.deadline || '', Published: r.publishedOn || '', CPV: (r.cpvCodes || []).slice(0, 3).join(' '), Link: r.noticeUrl });\n}\nfor (const r of all('UK tenders')) {\n  if (!r.noticeUrl) { if (r.error) errors.push('UK: ' + r.error); continue; }\n  rows.push({ Source: r.source || 'UK', Country: 'GBR', Title: r.title || '', Buyer: r.buyer || '', Value: r.value ?? '', Currency: r.currency || 'GBP', Deadline: String(r.deadline || '').slice(0, 10), Published: String(r.publishedAt || '').slice(0, 10), CPV: (r.cpvCodes || []).slice(0, 3).join(' '), Link: r.noticeUrl });\n}\nconst fresh = [...new Map(rows.filter(r => !sent.has(r.Link)).map(r => [r.Link, r])).values()]\n  .map(r => { const d = daysLeft(r.Deadline); return { ...r, 'Days left': d ?? '', 'Closing soon': d != null && d >= 0 && d <= s.closingSoonDays ? 'yes' : '', 'Sent on': today.toISOString().slice(0, 10) }; })\n  .sort((a, b) => (a['Days left'] === '' ? 1e9 : a['Days left']) - (b['Days left'] === '' ? 1e9 : b['Days left']));\nif (!fresh.length) return [{ json: { _none: true, errors } }];\nreturn fresh.map(r => ({ json: { ...r, _errors: errors } }));"
+      },
+      "executeOnce": true
+    },
+    {
+      "id": "b4714ee6-2371-4e83-bce2-58fec820b28a",
+      "name": "Any new tenders?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1200,
+        420
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "n1",
+              "leftValue": "={{ $json._none }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "notTrue",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "aa8ba215-3e6f-45cd-9f21-2801e90874cb",
+      "name": "Log new tenders",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1420,
+        300
+      ],
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "list"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": []
+        },
+        "options": {}
+      }
+    },
+    {
+      "id": "80ae73d4-9303-46a3-8d32-617815c5d55c",
+      "name": "Build email",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1420,
+        520
+      ],
+      "parameters": {
+        "jsCode": "// One HTML email: closing soon first, then everything else new this week.\nconst rows = $input.all().map(i => i.json).filter(r => !r._none);\nconst errors = ($input.first().json._errors || $input.first().json.errors || []);\nconst esc = t => String(t ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\nconst money = r => (r.Value === '' || r.Value == null ? 'value not stated' : Number(r.Value).toLocaleString('en-GB') + ' ' + esc(r.Currency));\nconst line = r => `<li><a href=\"${esc(r.Link)}\">${esc(r.Title)}</a><br><span style=\"color:#555\">${esc(r.Buyer)} (${esc(r.Country)}) &middot; ${money(r)} &middot; deadline ${esc(r.Deadline || 'not stated')}${r['Days left'] !== '' ? ` (${r['Days left']} days)` : ''} &middot; ${esc(r.Source)}</span></li>`;\nconst soon = rows.filter(r => r['Closing soon']);\nconst rest = rows.filter(r => !r['Closing soon']);\nconst s = $('Your settings').first().json;\nconst head = `<p>${rows.length} new public tenders matching <b>${esc(s.keywords.join(', '))}</b> in the last ${s.days} days.</p>`;\nconst foot = `<p style=\"color:#666;font-size:12px\">${errors.length ? 'Notes: ' + esc(errors.join(' ')) + '<br>' : ''}Data: EU Tenders Scraper (TED) and UK Government Tenders Scraper by Pagecraft on Apify. Already-sent tenders are skipped using your Google Sheet.</p>`;\nreturn [{ json: {\n  count: rows.length,\n  subject: rows.length ? `Tender alert: ${rows.length} new (${soon.length} closing soon)` : 'Tender alert: nothing new this week',\n  html: head + (soon.length ? `<h3>Closing soon</h3><ul>${soon.map(line).join('')}</ul>` : '') + (rest.length ? `<h3>New this week</h3><ul>${rest.map(line).join('')}</ul>` : '') + foot\n} }];"
+      }
+    },
+    {
+      "id": "c7123b1e-f5b2-4cbd-bb49-26d8ffbe9ad4",
+      "name": "Email tender alert",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1640,
+        520
+      ],
+      "webhookId": "",
+      "parameters": {
+        "sendTo": "={{ $('Your settings').first().json.email }}",
+        "subject": "={{ $json.subject }}",
+        "message": "={{ $json.html }}",
+        "options": {
+          "appendAttribution": false
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Every Monday 7am": {
+      "main": [
+        [
+          {
+            "node": "Your settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Run now": {
+      "main": [
+        [
+          {
+            "node": "Your settings",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Your settings": {
+      "main": [
+        [
+          {
+            "node": "Read sent tenders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read sent tenders": {
+      "main": [
+        [
+          {
+            "node": "EU tenders (TED)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EU tenders (TED)": {
+      "main": [
+        [
+          {
+            "node": "UK tenders",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "UK tenders": {
+      "main": [
+        [
+          {
+            "node": "Merge and flag new",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge and flag new": {
+      "main": [
+        [
+          {
+            "node": "Any new tenders?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Any new tenders?": {
+      "main": [
+        [
+          {
+            "node": "Log new tenders",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Build email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Build email": {
+      "main": [
+        [
+          {
+            "node": "Email tender alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
