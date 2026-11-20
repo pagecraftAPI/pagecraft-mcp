@@ -1,8 +1,8 @@
 {
-  "name": "TEST tender alert",
+  "name": "TEST tender alert 2",
   "nodes": [
     {
-      "id": "7bea61d4-459d-44e7-a01c-cbeb684c13c5",
+      "id": "1c3af4a8-98fc-4973-a99a-f2183da0d66a",
       "name": "Overview",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -18,7 +18,7 @@
       }
     },
     {
-      "id": "90d9787e-57fc-4412-91e8-c128f7750fbb",
+      "id": "d07f0be8-2a77-4e73-a2df-95bfacf0db7c",
       "name": "Setup",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -34,7 +34,7 @@
       }
     },
     {
-      "id": "fadc88bb-b8d7-45c7-92f8-8202b44bc5e2",
+      "id": "e68d88c9-357e-4223-8975-dd7897836c67",
       "name": "Note inputs",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -50,7 +50,7 @@
       }
     },
     {
-      "id": "dfe6f28c-0830-4ca3-bfe6-e1de28143b6b",
+      "id": "70db2f03-f627-41e8-a82a-cd0b3ed8f36a",
       "name": "Note search",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -66,7 +66,7 @@
       }
     },
     {
-      "id": "04dbf169-d681-4372-a28f-cc92869873cc",
+      "id": "025d932c-4d6a-4428-aefd-6c27ac4cc021",
       "name": "Note output",
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
@@ -82,7 +82,7 @@
       }
     },
     {
-      "id": "92d0fe40-8d60-43da-aef1-0659e584c8da",
+      "id": "92874bf9-fcdd-4e64-ac71-2999dc789a5e",
       "name": "Every Monday 7am",
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
@@ -105,7 +105,7 @@
       }
     },
     {
-      "id": "fe9996e5-f6f2-40d6-8997-39af918ea278",
+      "id": "ff7371bc-ec10-4594-8016-a7d73c330435",
       "name": "Run now",
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
@@ -116,7 +116,7 @@
       "parameters": {}
     },
     {
-      "id": "ac1dd526-c252-4cd7-b801-70b46a92b740",
+      "id": "2657abca-8dc0-4ff4-bfca-feb4d4437ef8",
       "name": "Your settings",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -130,7 +130,7 @@
       "executeOnce": true
     },
     {
-      "id": "ad730c40-e2ef-4d71-a092-4890e9a73e67",
+      "id": "d91f64ea-e9cf-4e16-97e9-51192ff9c2e4",
       "name": "Read sent tenders",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
@@ -156,7 +156,7 @@
       "disabled": true
     },
     {
-      "id": "166ea920-e63b-4d0a-b4f6-31c5004a0555",
+      "id": "10fc5bd0-06a0-4af2-a66c-1b99bc97b1de",
       "name": "EU tenders (TED)",
       "type": "@apify/n8n-nodes-apify.apify",
       "typeVersion": 2,
@@ -181,7 +181,7 @@
       }
     },
     {
-      "id": "b16d9ed7-4e2f-482f-b32b-9d9405a8ad0c",
+      "id": "83d21dce-3cea-498f-846c-eae821f610e0",
       "name": "UK tenders",
       "type": "@apify/n8n-nodes-apify.apify",
       "typeVersion": 2,
@@ -206,7 +206,7 @@
       }
     },
     {
-      "id": "60861ab4-2eb2-479c-8b53-1e42baa83b41",
+      "id": "17620d29-7c2d-4505-a390-904a5e3f16d9",
       "name": "Merge and flag new",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -220,7 +220,7 @@
       "executeOnce": true
     },
     {
-      "id": "b4714ee6-2371-4e83-bce2-58fec820b28a",
+      "id": "ecb2d2e5-1653-4dd3-8a50-dfa64dbfe8b0",
       "name": "Any new tenders?",
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.2,
@@ -238,12 +238,11 @@
           "conditions": [
             {
               "id": "n1",
-              "leftValue": "={{ $json._none }}",
-              "rightValue": "",
+              "leftValue": "={{ $json._none ? 0 : 1 }}",
+              "rightValue": 1,
               "operator": {
-                "type": "boolean",
-                "operation": "notTrue",
-                "singleValue": true
+                "type": "number",
+                "operation": "equals"
               }
             }
           ],
@@ -253,7 +252,7 @@
       }
     },
     {
-      "id": "aa8ba215-3e6f-45cd-9f21-2801e90874cb",
+      "id": "b1a30490-8b27-4cbe-93ae-86e435998ca0",
       "name": "Log new tenders",
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.5,
@@ -284,7 +283,7 @@
       "disabled": true
     },
     {
-      "id": "80ae73d4-9303-46a3-8d32-617815c5d55c",
+      "id": "32e5a017-da8c-47b4-8005-8a95b809a8ab",
       "name": "Build email",
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -297,7 +296,7 @@
       }
     },
     {
-      "id": "c7123b1e-f5b2-4cbd-bb49-26d8ffbe9ad4",
+      "id": "f6d5f20f-c375-42f6-8ba7-07dc2840d18d",
       "name": "Email tender alert",
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.1,
