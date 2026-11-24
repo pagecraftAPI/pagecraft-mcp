@@ -8,12 +8,12 @@ Every tool charges only per result, and agents can pay per request. Runs on Apif
 Add this as a remote (streamable HTTP) MCP server in Claude, Cursor, VS Code or any MCP client:
 
 ```
-https://mcp.apify.com?tools=pagecraft/app-reviews-scraper,pagecraft/app-store-reviews-scraper,pagecraft/article-extractor,pagecraft/bluesky-scraper,pagecraft/broken-link-checker,pagecraft/website-intelligence,pagecraft/email-dns-security-audit,pagecraft/google-ads-transparency-scraper,pagecraft/google-news-scraper,pagecraft/google-play-reviews-scraper,pagecraft/ats-jobs-scraper,pagecraft/hacker-news-scraper,pagecraft/keyword-suggestions-scraper,pagecraft/ai-agent-readiness-audit,pagecraft/llms-txt-generator,pagecraft/brand-kit-extractor,pagecraft/ocr-image-to-text,pagecraft/pagespeed-checker,pagecraft/pdf-text-extractor,pagecraft/remote-jobs-scraper,pagecraft/rss-feed-reader,pagecraft/seo-site-audit,pagecraft/shopify-products-scraper,pagecraft/sitemap-url-extractor,pagecraft/tech-stack-detector,pagecraft/telegram-channel-scraper,pagecraft/uk-tenders-finder,pagecraft/wayback-machine-snapshots,pagecraft/website-contact-extractor,pagecraft/website-screenshot-pdf,pagecraft/domain-whois-lookup,pagecraft/workday-jobs-scraper,pagecraft/companies-house-scraper,pagecraft/eu-tenders-finder,pagecraft/dns-lookup
+https://mcp.apify.com?tools=pagecraft/app-reviews-scraper,pagecraft/app-store-reviews-scraper,pagecraft/article-extractor,pagecraft/bluesky-scraper,pagecraft/broken-link-checker,pagecraft/website-intelligence,pagecraft/email-dns-security-audit,pagecraft/google-ads-transparency-scraper,pagecraft/google-news-scraper,pagecraft/google-play-reviews-scraper,pagecraft/ats-jobs-scraper,pagecraft/hacker-news-scraper,pagecraft/keyword-suggestions-scraper,pagecraft/ai-agent-readiness-audit,pagecraft/llms-txt-generator,pagecraft/brand-kit-extractor,pagecraft/ocr-image-to-text,pagecraft/pagespeed-checker,pagecraft/pdf-text-extractor,pagecraft/remote-jobs-scraper,pagecraft/rss-feed-reader,pagecraft/seo-site-audit,pagecraft/shopify-products-scraper,pagecraft/sitemap-url-extractor,pagecraft/tech-stack-detector,pagecraft/telegram-channel-scraper,pagecraft/uk-tenders-finder,pagecraft/wayback-machine-snapshots,pagecraft/website-contact-extractor,pagecraft/website-screenshot-pdf,pagecraft/domain-whois-lookup,pagecraft/workday-jobs-scraper,pagecraft/companies-house-scraper,pagecraft/eu-tenders-finder,pagecraft/dns-lookup,pagecraft/email-validator,pagecraft/companies-house-monitor
 ```
 
 Or load a single tool with `https://mcp.apify.com?tools=pagecraft/<tool>` (links below).
 
-## The 35 tools
+## The 37 tools
 
 | Tool | What it does | MCP URL |
 |---|---|---|
@@ -52,6 +52,8 @@ Or load a single tool with `https://mcp.apify.com?tools=pagecraft/<tool>` (links
 | [Website Screenshot & PDF (Full Page, Any Device)](https://apify.com/pagecraft/website-screenshot-pdf) | Bulk full-page website screenshots and PDFs with cookie banners removed. Desktop, tablet and phone in one run. PNG, JPEG, WebP or PDF. Pay per capture. | `https://mcp.apify.com?tools=pagecraft/website-screenshot-pdf` |
 | [WHOIS Lookup (Bulk Domain Age, Expiry & Registrar)](https://apify.com/pagecraft/domain-whois-lookup) | Bulk WHOIS and RDAP lookup for any domain: registrar, creation and expiry dates, domain age, status, nameservers, DNSSEC and availability. All TLDs. | `https://mcp.apify.com?tools=pagecraft/domain-whois-lookup` |
 | [Workday Jobs Scraper (Any myworkdayjobs.com Career Site)](https://apify.com/pagecraft/workday-jobs-scraper) | Get every open job from any Workday career site, even sites over Workday's 2,000-job limit: title, location, remote type, date and full description. | `https://mcp.apify.com?tools=pagecraft/workday-jobs-scraper` |
+| [Email Validator (Bulk: MX, Disposable, Role & Typo Check)](https://apify.com/pagecraft/email-validator) | Clean email lists in bulk: syntax, domain and MX record checks, disposable and role address detection, free provider flag, mail provider (Google, Microsoft...) and typo fixes like gmial.com. Valid, risky or invalid with a reason. | `https://mcp.apify.com?tools=pagecraft/email-validator` |
+| [Companies House Change Alerts: Filings, Directors & Owners](https://apify.com/pagecraft/companies-house-monitor) | Watch UK companies on the official Companies House register: new filings, director and owner changes, status, name and address changes, and warning signs such as overdue accounts. One structured row per company, ready for alerts and AI agents. | `https://mcp.apify.com?tools=pagecraft/companies-house-monitor` |
 
 ## Guides
 
