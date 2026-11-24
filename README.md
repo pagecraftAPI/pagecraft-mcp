@@ -13,7 +13,7 @@ https://mcp.apify.com?tools=pagecraft/app-reviews-scraper,pagecraft/app-store-re
 
 Or load a single tool with `https://mcp.apify.com?tools=pagecraft/<tool>` (links below).
 
-## The 32 tools
+## The 35 tools
 
 | Tool | What it does | MCP URL |
 |---|---|---|
